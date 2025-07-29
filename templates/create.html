@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}إنشاء مقال{% endblock %}
+
+{% block content %}
+<h2>📝 إنشاء مقال جديد</h2>
+
+<form method="POST" action="/create">
+    <label>الموقع:</label>
+    <select name="site" required>
+        {% for site in sites %}
+            <option value="{{ site }}">{{ site }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>العنوان:</label><br>
+    <input type="text" name="title" required><br><br>
+
+    <!-- 🧩 محرر React يظهر هنا -->
+    <div id="react-editor"></div>
+
+    <!-- 🛑 هذا input مخفي لتخزين الناتج -->
+    <input type="hidden" name="content" id="content-hidden">
+
+    <br><button type="submit">➕ إنشاء المقال</button>
+</form>
+
+{% if new_post_link %}
+    <p>✅ تم إنشاء المقال: <a href="{{ new_post_link }}" target="_blank">{{ new_post_link }}</a></p>
+{% elif error %}
+    <p style="color:red;">❌ خطأ: {{ error }}</p>
+{% endif %}
+
+<!-- 🧠 سكربت React -->
+<script type="module" src="{{ url_for('static', filename='react/' ~ react_entry) }}"></script>
+
+{% endblock %}

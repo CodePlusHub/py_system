@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}جميع المقالات{% endblock %}
+
+{% block content %}
+
+<h1>📄 جميع المقالات</h1>
+
+<!-- 🔽 Select Box لاختيار الموقع -->
+<label>اختر موقع:</label>
+<select id="siteFilter">
+    <option value="all">كل المواقع</option>
+    {% for site in sites %}
+        <option value="{{ site }}">{{ site }}</option>
+    {% endfor %}
+</select>
+
+<!-- 🔍 خانة بحث -->
+<input type="text" id="searchBox" placeholder="ابحث في المقالات..." style="margin-left: 15px;">
+
+<br><br>
+
+<!-- 📋 جدول المقالات -->
+<table id="articlesTable" >
+    <thead>
+        <tr>
+            <th>الموقع</th>
+            <th>العنوان</th>
+            <th>الرابط</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in articles %}
+        <tr>
+            <td class="title">{{ article.title }}</td>
+            <td class="site">{{ article.site }}</td>
+            <td><a href="{{ article.link }}" target="_blank">عرض</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- 🔌 سكربت الفلترة -->
+<script>
+    const siteFilter = document.getElementById("siteFilter");
+    const searchBox = document.getElementById("searchBox");
+    const table = document.getElementById("articlesTable");
+    const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    function filterArticles() {
+        const selectedSite = siteFilter.value.toLowerCase();
+        const searchText = searchBox.value.toLowerCase();
+
+        for (let row of rows) {
+            const siteText = row.querySelector(".site").textContent.toLowerCase();
+            const titleText = row.querySelector(".title").textContent.toLowerCase();
+
+            const matchesSite = selectedSite === "all" || siteText.includes(selectedSite);
+            const matchesSearch = titleText.includes(searchText) || siteText.includes(searchText);
+
+            row.style.display = (matchesSite && matchesSearch) ? "" : "none";
+        }
+    }
+
+    siteFilter.addEventListener("change", filterArticles);
+    searchBox.addEventListener("input", filterArticles);
+</script>
+
+{% endblock %}

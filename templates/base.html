@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <title>{% block title %}WP Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+
+</head>
+<body>
+    <nav>
+        <a href="/">🏠 المقالات</a>
+        <a href="/create">➕ إنشاء مقال</a>
+        <!-- ممكن تضيف صفحات تانية هنا -->
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
